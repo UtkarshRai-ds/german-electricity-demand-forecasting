@@ -1,0 +1,9 @@
+{
+  "n_rows": 56389,
+  "n_features": 13,
+  "date_start": "2020-01-08",
+  "date_end": "2026-06-15",
+  "test_start": "2026-01-01",
+  "test_end": "2026-06-15",
+  "n_test_hours": 3984
+}

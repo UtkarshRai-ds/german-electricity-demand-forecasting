@@ -1,0 +1,6 @@
+.venv/
+mlruns/
+catboost_info/
+.vscode/
+__pycache__/
+*.egg-info/

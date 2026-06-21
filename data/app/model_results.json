@@ -1,0 +1,68 @@
+{
+  "benchmark": {
+    "same_holdout_mape": 4.3973,
+    "full_history_mape": 3.79,
+    "source": "ENTSO-E / German TSO composite day-ahead forecast"
+  },
+  "best_model": "CatBoost",
+  "best_mape": 2.8321,
+  "improvement_vs_benchmark_pct": 35.6,
+  "models": [
+    {
+      "name": "Seasonal Naive",
+      "mape": 6.44,
+      "resolution": "hourly",
+      "note": "simple baseline"
+    },
+    {
+      "name": "SARIMA",
+      "mape": 36.96,
+      "resolution": "daily",
+      "note": "diverged \u2014 structural breaks"
+    },
+    {
+      "name": "Prophet",
+      "mape": 3.7,
+      "resolution": "daily",
+      "note": "not directly comparable to hourly"
+    },
+    {
+      "name": "LightGBM",
+      "mape": 3.0561,
+      "resolution": "hourly",
+      "note": ""
+    },
+    {
+      "name": "XGBoost",
+      "mape": 3.0801,
+      "resolution": "hourly",
+      "note": ""
+    },
+    {
+      "name": "CatBoost",
+      "mape": 2.8321,
+      "resolution": "hourly",
+      "note": "best"
+    }
+  ],
+  "leak_audit": [
+    {
+      "model": "LightGBM",
+      "before": 2.7686,
+      "after": 3.0561,
+      "delta_pp": 0.29
+    },
+    {
+      "model": "XGBoost",
+      "before": 2.5829,
+      "after": 3.0801,
+      "delta_pp": 0.5
+    },
+    {
+      "model": "CatBoost",
+      "before": 2.2419,
+      "after": 2.8321,
+      "delta_pp": 0.59
+    }
+  ]
+}

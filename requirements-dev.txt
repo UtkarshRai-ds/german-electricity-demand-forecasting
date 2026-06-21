@@ -1,0 +1,17 @@
+pandas
+numpy
+pyarrow
+scikit-learn
+statsmodels
+xgboost
+lightgbm
+catboost
+holidays
+requests
+mlflow
+streamlit
+plotly
+pytest
+ipykernel
+holidays
+prophet
