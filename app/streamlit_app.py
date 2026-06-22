@@ -167,7 +167,7 @@ def page_overview() -> None:
     )
     st.markdown(
         '<div class="hero-tagline">'
-        '"Predicting Germany\'s electricity demand 24 hours ahead — '
+        '"Predicting Germany\'s electricity demand 24 hours ahead'
         'and beating the grid operator\'s own forecast \u2014 a time-series analysis"</div>',
         unsafe_allow_html=True,
     )
@@ -175,12 +175,12 @@ def page_overview() -> None:
     st.markdown(
         f"""
         Germany's grid operators must predict national electricity demand a day in
-        advance so the right amount of power is generated — too little risks blackouts,
-        too much wastes money and fuel. This project builds a machine-learning model
+        advance so the right amount of power is generated to ensure minimal risks blackouts and
+        too much waste of resources such as money and fuel. This project builds a machine-learning model
         that forecasts hourly demand **24 hours ahead** and is **more accurate than the
         official forecast** the transmission operators publish.
 
-        On an honest test of the first half of 2026 — data the model never saw during
+        On an honest test of the first half of 2026 the data and model never saw during
         training — it predicts demand with an average error of just
         **{results['best_mape']:.2f}%**, compared with **{bench['same_holdout_mape']:.2f}%**
         for the official grid-operator forecast over the same period. The whole pipeline
@@ -228,7 +228,7 @@ def page_overview() -> None:
         st.info(
             "**Six Models Compared**\n\n"
             "From a simple last-week baseline through SARIMA and Prophet to gradient-boosted "
-            "trees (LightGBM, XGBoost, CatBoost) — each tested on the same unseen 2026 data."
+            "trees (LightGBM, XGBoost, CatBoost), each tested on the same unseen 2026 data."
         )
     with col_c:
         st.info(
@@ -243,14 +243,14 @@ def page_overview() -> None:
 # ── Page 2: Explore the Data ──────────────────────────────────────────────────
 def page_eda() -> None:
     page_header("Explore the Data",
-                "What German electricity demand actually looks like — and why the model works")
+                "What German electricity demand actually looks like and why the model works")
 
     profiles = load_json("eda_profiles.json")
 
     st.markdown(
         "Electricity demand is one of the most predictable time series in the world, "
         "because it follows human routines. The three patterns below are exactly what "
-        "the model's features are built to capture — which is why a well-engineered model "
+        "the model's features are built to capture and which is why a well-engineered model "
         "can forecast it so accurately."
     )
 
@@ -281,7 +281,7 @@ def page_eda() -> None:
         st.caption(
             "Demand dips overnight, climbs to a mid-morning peak (~09:00), and rises again "
             "in the early evening (~18:00–20:00). This daily swing of ~20,000 MWh is why the "
-            "**lag_24** feature — demand exactly 24 hours earlier — is so powerful."
+            "**lag_24** feature demand exactly 24 hours earlier is so powerful."
         )
 
     with col2:
@@ -303,7 +303,7 @@ def page_eda() -> None:
         st.caption(
             "Weekday demand runs ~10–15% above Saturday and ~20% above Sunday, as factories "
             "and offices power down for the weekend. This is what the **lag_168** feature "
-            "(demand exactly one week earlier) captures — same hour, same day-type."
+            "(demand exactly one week earlier) captures the same hour, same day-type."
         )
 
     st.divider()
@@ -339,14 +339,14 @@ def page_eda() -> None:
          "single most useful input is what demand was at this same hour 24 hours ago."),
         ("The weekly pattern is nearly as strong",
          "Weekday demand sits 10–20% above the weekend. Demand one week ago (lag_168) is the "
-         "model's top predictor — it captures both the hour and the day-type at once."),
+         "model's top predictor capturing both the hour and the day-type at once."),
         ("Demand shocks are visible in the history",
          "Spring 2020 shows a sustained drop from COVID-19 lockdowns; 2022 shows a "
          "structurally lower baseline as industry cut consumption during the gas-price crisis. "
          "These regime changes are exactly why classical models like SARIMA struggle here."),
         ("The grid operator is already very good",
          "The official day-ahead forecast is strong, so beating it required well-engineered "
-         "weather, calendar, and holiday features — not just raw autoregressive structure."),
+         "weather, calendar, and holiday features and not just raw autoregressive structure."),
     ]
     for title, body in findings:
         st.info(f"**{title}**\n\n{body}")
@@ -368,7 +368,7 @@ def page_model_results() -> None:
     st.markdown(
         "This is the heart of the project. The chart compares actual demand (what really "
         "happened) against the model's 24-hour-ahead forecast and the official grid-operator "
-        "forecast — all on the same hours. Use the slider to zoom into any window."
+        "forecast of all on the same hours. Use the slider to zoom into any window."
     )
 
     n = len(fc)
@@ -461,7 +461,7 @@ def page_model_results() -> None:
         st.markdown(
             "**SARIMA** (Seasonal AutoRegressive Integrated Moving Average) is a classical "
             "statistical method from the 1970s, developed by statisticians Box and Jenkins. "
-            "It assumes the seasonal pattern — here, the weekly demand rhythm — stays *stable* "
+            "It assumes the seasonal patterns here, the weekly demand rhythm stays *stable* "
             "over time and projects it forward.\n\n"
             "On this data it diverged badly (its forecast drifted steadily downward). That is "
             "**expected, not a bug**: German demand went through structural shifts (COVID, the "
@@ -475,7 +475,7 @@ def page_model_results() -> None:
             "**Prophet** is an open-source forecasting library released in 2017 by Facebook's "
             "Core Data Science team (now Meta). It splits a series into trend, seasonality, and "
             "holiday effects and is designed to be easy to use on business time series.\n\n"
-            "It scored a respectable 3.70% — but on *daily totals*, which smooth away the "
+            "It scored a respectable 3.70% but on *daily totals*, which smooth away the "
             "intraday peaks that make forecasting hard. That is not directly comparable to the "
             "hourly models. It is included to show the full modelling progression from simple "
             "to statistical to machine-learning approaches."
@@ -487,10 +487,10 @@ def page_model_results() -> None:
     page_header("The Leakage Audit — Why These Numbers Are Honest")
     st.markdown(
         "Mid-project, a self-audit found **data leakage**: some features were secretly using "
-        "information from the exact hour being predicted — like peeking at the answer. This "
+        "information from the exact hour being predicted is like peeking at the answer. This "
         "makes a model look better than it really is. Every leaking feature was fixed, the "
         "models were retrained, and the honest (slightly higher) errors are what you see above. "
-        "Reporting the before/after openly is the point — it is the difference between a model "
+        "Reporting the before/after openly is the point and it is the difference between a model "
         "that *looks* good and one that *is* good."
     )
     audit = results["leak_audit"]
@@ -539,7 +539,7 @@ def page_model_results() -> None:
     fig.update_xaxes(gridcolor="#1e293b")
     st.plotly_chart(fig, use_container_width=True)
     st.caption(
-        "Last week's demand and yesterday's demand dominate — the model is, at heart, learning "
+        "Last week's demand and yesterday's demand dominates the model is, at heart, learning "
         "the daily and weekly rhythms seen on the previous page. Temperature contributes little, "
         "because for *demand* (unlike renewable *generation*) the calendar matters far more than "
         "the weather."
@@ -547,7 +547,7 @@ def page_model_results() -> None:
 
     st.divider()
 
-    page_header("In Plain Terms — What This Project Shows")
+    page_header("Conclusion : What This Project Shows")
     st.markdown(
         """
         **The result.** Out of six forecasting approaches, the best model (CatBoost) predicts
@@ -557,11 +557,11 @@ def page_model_results() -> None:
         **36% more accurate than the professional benchmark**, built entirely from free, public data.
 
         **Why you can trust the number.** Partway through the project, an internal check caught a
-        subtle mistake: a few of the model's inputs were accidentally "peeking" at the very hour they
-        were supposed to predict — like a student who can see the answer key during the exam. That
+        subtle mistake: a few of the model's inputs were accidentally "peeking"(data leak) at the very hour they
+        were supposed to predict like a student who can see the answer key during the exam. That
         makes any model look better than it really is. Rather than quietly leave it in, the issue was
         found, fixed, and documented openly: the honest accuracy went from a flattering 2.24% to a
-        truthful 2.83%. The slightly higher number is the *real* one — and being able to show that
+        truthful 2.83%. The slightly higher number is the *real* one and being able to show that
         difference, with a full audit trail, is what separates a forecast that merely looks good from
         one that actually holds up.
 
@@ -569,7 +569,7 @@ def page_model_results() -> None:
         the right amount of power: less risk of shortfalls, less wasted fuel, lower costs, and fewer
         emissions across a roughly 60,000-MWh national load. Even a single percentage point of
         accuracy, sustained across every hour of the year, is operationally significant. This project
-        shows that a transparent, reproducible, open-data pipeline can match — and beat — an
+        shows that a transparent, reproducible, open-data pipeline can match and beat an
         established professional benchmark, while being honest about exactly how good it is and where
         its limits lie.
         """
@@ -647,7 +647,7 @@ def page_how_i_built() -> None:
              "All three boosting models beat the benchmark, but CatBoost had the lowest honest "
              "error (2.83%) and handles the categorical-style calendar features cleanly."),
             ("Keeping the diverged SARIMA in the lineup",
-             "Documenting a model that failed — and explaining why — is more honest than quietly "
+             "Documenting a model that failed and explaining why is more honest than quietly "
              "dropping it, and it justifies the progression to machine-learning methods."),
             ("Auditing for leakage before trusting any number",
              "A model that looks great because it peeks at the answer is worthless in production. "
@@ -662,16 +662,16 @@ def page_how_i_built() -> None:
         lessons = [
             ("Leakage hides in rolling windows",
              "A rolling average that includes the current hour silently leaks the target. The "
-             "fix — shift the series by the forecast horizon first — is simple but easy to miss."),
+             "fix: shift the series by the forecast horizon first, it is simple but easy to miss."),
             ("Honest beats impressive",
              "The leaked model showed 2.24%; the honest one shows 2.83%. The honest number, with "
              "an audit trail, is far more valuable in an interview than the inflated one."),
             ("Match the benchmark to the test window",
              "The operator's headline 3.79% is a full-history figure. Compared fairly on the same "
-             "2026 hours it is 4.40% — always benchmark on identical periods."),
+             "2026 hours it is 4.40% which is always the benchmark on identical periods."),
             ("For demand, the calendar beats the weather",
              "Temperature barely moved the model. Human routines (hour, day, week) drive demand "
-             "far more than weather — which matters more for renewable generation."),
+             "far more than weather which matters more for renewable generation."),
         ]
         for title, body in lessons:
             with st.expander(title):
@@ -689,7 +689,7 @@ def page_how_i_built() -> None:
          "In real operation you have a *weather forecast* for tomorrow, not the actual "
          "temperature. This project uses observed temperature shifted by 24 hours as a stand-in, "
          "because archived forecast runs were not available. Real-world error would be slightly "
-         "higher — though temperature barely affects this model, so the effect is small."),
+         "higher though temperature barely affects this model, so the effect is small."),
         ("Tested on a single time window",
          "The model is scored on one continuous period (the first half of 2026). That is one "
          "realistic snapshot, not a distribution across many periods, so the 2.83% is a single "
