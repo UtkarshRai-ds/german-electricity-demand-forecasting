@@ -187,6 +187,11 @@ def page_overview() -> None:
         runs from public data (SMARD.de electricity data and Open-Meteo weather) through
         feature engineering, six forecasting models, and a leakage audit that keeps the
         numbers trustworthy.
+
+        SMARD publishes two things: what demand *actually* turned out to be each hour, and what
+        the grid operators had *forecast* it would be a day earlier. This project's accuracy is
+        measured against the actual figures, and the benchmark is the operators' own published
+        forecast — so the comparison is like-for-like on the same hours.
         """
     )
 
@@ -552,8 +557,8 @@ def page_model_results() -> None:
         """
         **The result.** Out of six forecasting approaches, the best model (CatBoost) predicts
         Germany's national electricity demand a full day ahead with an average error of just
-        **2.83%**. On the exact same hours, the official forecast published by the grid operators —
-        the people whose job this is — was off by **4.40%**. In other words, this model is about
+        **2.83%**. On the exact same hours, the official day-ahead forecast published by the
+        German grid operators was off by **4.40%**. In other words, this model is about
         **36% more accurate than the professional benchmark**, built entirely from free, public data.
 
         **Why you can trust the number.** Partway through the project, an internal check caught a
