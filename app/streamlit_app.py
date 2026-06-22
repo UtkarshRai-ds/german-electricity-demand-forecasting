@@ -191,7 +191,7 @@ def page_overview() -> None:
         SMARD publishes two things: what demand *actually* turned out to be each hour, and what
         the grid operators had *forecast* it would be a day earlier. This project's accuracy is
         measured against the actual figures, and the benchmark is the operators' own published
-        forecast — so the comparison is like-for-like on the same hours.
+        forecast so the comparison is like-for-like on the same hours.
         """
     )
 
