@@ -1,10 +1,9 @@
 # ⚡ German Electricity Demand Forecasting — SMARD / Bundesnetzagentur
 
-**Forecasting Germany's national electricity demand 24 hours ahead — and beating the grid operator's own day-ahead forecast on the same period.**
+**Forecasting Germany's national electricity demand 24 hours ahead and beating the grid operator's own day-ahead forecast on the same period using time series analysis.**
 
-🔗 **Live demo:** _[deployment link — add after Streamlit Cloud deploy]_
+🔗 **Live:** https://german-electricity-demand-forecasting.streamlit.app/
 📊 **Dataset:** [SMARD.de](https://www.smard.de/en) (Bundesnetzagentur) · [Open-Meteo](https://open-meteo.com)
-👤 **Author:** Utkarsh Rai · [GitHub](https://github.com/UtkarshRai-ds)
 
 ---
 
@@ -17,8 +16,7 @@ are wasted. Even a fraction of a percentage point of accuracy translates into me
 operational savings across a ~60,000 MWh national load.
 
 **Who uses it.** The intended end user is a grid analyst or energy trader who needs an
-accurate, reproducible day-ahead load forecast — and, for this portfolio, a hiring manager
-evaluating whether the modelling is sound and honestly reported.
+accurate, reproducible day-ahead load forecast.
 
 **The data.** Six years of hourly German grid load (2020–2026) from SMARD.de, joined with
 hourly temperature from Open-Meteo. After lag-warmup the modelling set is ~56,000 hourly rows.
@@ -29,20 +27,20 @@ hours ahead, using only information that would genuinely be available at forecas
 **Key design decision.** The whole project is built around a **strict 24-hour forecast
 horizon and a leakage audit.** Every feature derived from load or temperature is shifted so
 the model never sees information from the hour it is predicting. This is the difference between
-a model that *looks* accurate and one that *is* — and it is documented openly in
+a model that *looks* accurate and one that *is* and it is documented openly in
 [`reports/leak_audit.md`](reports/leak_audit.md).
 
 ---
 
 ## 2 · Headline Result
 
-On a strict hold-out of the first half of 2026 — data the model never saw in training — the
+On a strict hold-out of the first half of 2026 the data and model never saw in training. The
 best model (**CatBoost**) achieves **2.83% MAPE**, versus the official TSO day-ahead
 forecast's **4.40% MAPE** computed on the *identical* hours.
 
 > **CatBoost is ~36% more accurate than the official grid-operator forecast on the same 2026 hold-out.**
 
-The honest 2.83% is reported *after* a feature-leakage fix raised it from an inflated 2.24% —
+The honest 2.83% is reported *after* a feature-leakage fix raised it from an inflated 2.24%
 see [Key Decisions & Lessons](#9--key-decisions--lessons).
 
 ---
@@ -112,7 +110,7 @@ All models tested on the same 2026 hold-out (`2026-01-01` → `2026-06-15`).
 
 > **A note on fairness:** the gradient-boosted models and the Seasonal-Naive baseline are
 > scored on *hourly* demand (the hard target). SARIMA and Prophet were evaluated on *daily
-> totals*, which smooth away the intraday peaks that drive most forecast error — so their
+> totals*, which smooth away the intraday peaks that drive most forecast error so their
 > numbers document the modelling progression rather than competing head-to-head. The TSO's
 > full-history (2020–2026) MAPE is ~3.79%; on the identical 2026 hold-out it is 4.40%, which
 > is the fair comparison used throughout.
@@ -194,7 +192,7 @@ information available at forecast time. Calendar features are known in advance a
 
 | Feature | Type | Rationale |
 |---|---|---|
-| `lag_168` | Lag | Demand exactly one week ago — captures hour *and* day-type together; the single strongest predictor |
+| `lag_168` | Lag | Demand exactly one week ago - captures hour *and* day type together; the single strongest predictor |
 | `lag_24` | Lag | Demand 24 hours ago — anchors the daily cycle |
 | `hour` | Calendar | Hour of day — the ~20,000 MWh morning/evening swing |
 | `rolling_mean_24h` | Rolling | Recent demand level (window ends ≥24h before target) |
@@ -216,39 +214,25 @@ information available at forecast time. Calendar features are known in advance a
 ## 9 · Key Decisions & Lessons
 
 - **Found and fixed data leakage in my own work.** A mid-project audit revealed that rolling and
-  temperature features were computed over windows that included the predicted hour — silently
-  leaking the target. Fixing it (shifting every such feature by the 24h horizon) raised CatBoost's
-  honest MAPE from an inflated **2.24% to 2.83%**. The full before/after is in
-  [`reports/leak_audit.md`](reports/leak_audit.md). **The honest number, with an audit trail, is
-  worth more than the inflated one.**
+  temperature features were computed over windows that included the predicted hour and silently leaking the target. Fixing it (shifting every such feature by the 24h horizon) raised CatBoost's honest MAPE from an inflated **2.24% to 2.83%**. The full before/after is in [`reports/leak_audit.md`](reports/leak_audit.md). **The honest number, with an audit trail, is worth more than the inflated one.**
 
-- **SARIMA's divergence is a documented result, not a hidden failure.** SARIMA assumes a stable
-  seasonal pattern; German demand went through structural shifts (COVID-2020, the 2022 energy
-  crisis), so its forecast drifted badly (36.96% MAPE). Keeping it in the line-up — and explaining
-  *why* it failed — justifies the progression to tree-based models that make no stability assumption.
+- **SARIMA's divergence is a documented result, not a hidden failure.** SARIMA assumes a stable seasonal pattern; German demand went through structural shifts (COVID-2020, the 2022 energy crisis), so its forecast drifted badly (36.96% MAPE). Keeping it in the line-up and explaining *why* it failed and justifies the progression to tree-based models that make no stability assumption.
 
-- **Benchmarks must match the test window.** The TSO's headline accuracy (~3.79%) is a full-history
-  figure. Compared fairly on the identical 2026 hold-out it is 4.40% — the number used throughout.
-  Always benchmark on the same period you score your own model on.
+- **Benchmarks must match the test window.** The TSO's headline accuracy (~3.79%) is a full-history figure. Compared fairly on the identical 2026 hold-out it is 4.40% the number used throughout. Always benchmark on the same period you score your own model on.
 
 - **Gradient boosting over classical methods.** All three boosting models beat the benchmark;
   CatBoost won on honest MAPE and handles the categorical-style calendar features cleanly.
 
-- **Reproducibility first.** Every run is tracked in MLflow and the dashboard reads pre-exported
-  artifacts, so the deployed app never retrains and the numbers can be regenerated end-to-end.
+- **Reproducibility first.** Every run is tracked in MLflow and the dashboard reads pre-exported artifacts, so the deployed app never retrains and the numbers can be regenerated end-to-end.
 
 ---
 
 ## 10 · Limitations & Future Work
 
 **Limitations**
-- **Weather is observed, not forecasted.** Temperature features use observed values shifted 24h
-  as a stand-in for a real day-ahead weather forecast; true operational error would be marginally
-  higher (though temperature has low feature importance here).
-- **Single test window.** Scored on one continuous period (H1 2026), so 2.83% is one realisation,
-  not a distribution across many windows.
-- **National aggregate only.** Forecasts total German demand — no regional, generation-mix, or
-  price breakdown.
+- **Weather is observed, not forecasted.** Temperature features use observed values shifted 24h as a stand-in for a real day-ahead weather forecast; true operational error would be marginally higher (though temperature has low feature importance here).
+- **Single test window.** Scored on one continuous period (H1 2026), so 2.83% is one realisation, not a distribution across many windows.
+- **National aggregate only.** Forecasts total German demand with no regional, generation-mix, or price breakdown.
 - **Atypical regimes retained.** COVID-2020 and the 2022 energy crisis remain in the training
   data un-downweighted, which may bias the model toward those conditions.
 
