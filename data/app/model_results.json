@@ -30,13 +30,13 @@
       "name": "LightGBM",
       "mape": 3.0561,
       "resolution": "hourly",
-      "note": ""
+      "note": "gradient-boosted trees"
     },
     {
       "name": "XGBoost",
       "mape": 3.0801,
       "resolution": "hourly",
-      "note": ""
+      "note": "gradient-boosted trees"
     },
     {
       "name": "CatBoost",

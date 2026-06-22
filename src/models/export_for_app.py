@@ -114,8 +114,8 @@ def main() -> None:
             {"name": "Seasonal Naive", "mape": 6.44, "resolution": "hourly", "note": "simple baseline"},
             {"name": "SARIMA", "mape": 36.96, "resolution": "daily", "note": "diverged — structural breaks"},
             {"name": "Prophet", "mape": 3.70, "resolution": "daily", "note": "not directly comparable to hourly"},
-            {"name": "LightGBM", "mape": honest_mape["LightGBM"], "resolution": "hourly", "note": ""},
-            {"name": "XGBoost", "mape": honest_mape["XGBoost"], "resolution": "hourly", "note": ""},
+            {"name": "LightGBM", "mape": honest_mape["LightGBM"], "resolution": "hourly", "note": "gradient-boosted trees"},
+            {"name": "XGBoost", "mape": honest_mape["XGBoost"], "resolution": "hourly", "note": "gradient-boosted trees"},
             {"name": "CatBoost", "mape": honest_mape["CatBoost"], "resolution": "hourly", "note": "best"},
         ],
         "leak_audit": [

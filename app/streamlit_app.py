@@ -168,7 +168,7 @@ def page_overview() -> None:
     st.markdown(
         '<div class="hero-tagline">'
         '"Predicting Germany\'s electricity demand 24 hours ahead — '
-        'and beating the grid operator\'s own forecast"</div>',
+        'and beating the grid operator\'s own forecast \u2014 a time-series analysis"</div>',
         unsafe_allow_html=True,
     )
 
@@ -545,6 +545,36 @@ def page_model_results() -> None:
         "the weather."
     )
 
+    st.divider()
+
+    page_header("In Plain Terms — What This Project Shows")
+    st.markdown(
+        """
+        **The result.** Out of six forecasting approaches, the best model (CatBoost) predicts
+        Germany's national electricity demand a full day ahead with an average error of just
+        **2.83%**. On the exact same hours, the official forecast published by the grid operators —
+        the people whose job this is — was off by **4.40%**. In other words, this model is about
+        **36% more accurate than the professional benchmark**, built entirely from free, public data.
+
+        **Why you can trust the number.** Partway through the project, an internal check caught a
+        subtle mistake: a few of the model's inputs were accidentally "peeking" at the very hour they
+        were supposed to predict — like a student who can see the answer key during the exam. That
+        makes any model look better than it really is. Rather than quietly leave it in, the issue was
+        found, fixed, and documented openly: the honest accuracy went from a flattering 2.24% to a
+        truthful 2.83%. The slightly higher number is the *real* one — and being able to show that
+        difference, with a full audit trail, is what separates a forecast that merely looks good from
+        one that actually holds up.
+
+        **What it means in practice.** For a grid operator, sharper demand forecasts mean scheduling
+        the right amount of power: less risk of shortfalls, less wasted fuel, lower costs, and fewer
+        emissions across a roughly 60,000-MWh national load. Even a single percentage point of
+        accuracy, sustained across every hour of the year, is operationally significant. This project
+        shows that a transparent, reproducible, open-data pipeline can match — and beat — an
+        established professional benchmark, while being honest about exactly how good it is and where
+        its limits lie.
+        """
+    )
+
     footer()
 
 
@@ -705,7 +735,7 @@ def page_how_i_built() -> None:
     with lc:
         st.markdown(
             "[![GitHub](https://img.shields.io/badge/GitHub-View%20Source-181717?logo=github&style=for-the-badge)]"
-            "(https://github.com/utkarsh26rai)"
+            "(https://github.com/UtkarshRai-ds/german-electricity-demand-forecasting)"
         )
         st.caption("Full source code, the leakage audit, and reproducibility instructions.")
 
@@ -721,7 +751,7 @@ def main() -> None:
         )
         st.markdown(
             "<p style='color:#64748b;font-size:0.8rem;margin-top:0'>"
-            "SMARD · Bundesnetzagentur · Portfolio Project</p>",
+            "SMARD · Bundesnetzagentur · Time-Series Analysis</p>",
             unsafe_allow_html=True,
         )
         st.divider()
