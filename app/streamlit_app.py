@@ -187,11 +187,6 @@ def page_overview() -> None:
         runs from public data (SMARD.de electricity data and Open-Meteo weather) through
         feature engineering, six forecasting models, and a leakage audit that keeps the
         numbers trustworthy.
-
-        SMARD publishes two things: what demand *actually* turned out to be each hour, and what
-        the grid operators had *forecast* it would be a day earlier. This project's accuracy is
-        measured against the actual figures, and the benchmark is the operators' own published
-        forecast so the comparison is like-for-like on the same hours.
         """
     )
 
@@ -686,9 +681,6 @@ def page_how_i_built() -> None:
 
     # ── Limitations (separate section, as chosen) ─────────────────────────────
     page_header("Limitations")
-    st.markdown(
-        "Being clear about what this project does **not** do is part of doing it honestly:"
-    )
     limitations = [
         ("Weather is observed, not forecasted",
          "In real operation you have a *weather forecast* for tomorrow, not the actual "
@@ -713,7 +705,6 @@ def page_how_i_built() -> None:
 
     # ── Future work (separate section, as chosen) ─────────────────────────────
     page_header("Future Work")
-    st.markdown("Where this project would go next, in rough priority order:")
     future = [
         ("Use real day-ahead weather forecasts",
          "Pull archived forecast runs from Open-Meteo's historical-forecast API so the model "
