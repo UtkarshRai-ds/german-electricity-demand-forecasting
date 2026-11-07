@@ -7,7 +7,7 @@
 
 ---
 
-## 1 · Project Overview
+## Project Overview
 
 **The problem.** Germany's transmission system operators (TSOs) must predict national
 electricity demand a day in advance so generators schedule the right amount of power.
@@ -32,7 +32,7 @@ a model that *looks* accurate and one that *is* and it is documented openly in
 
 ---
 
-## 2 · Headline Result
+## Headline Result
 
 On a strict hold-out of the first half of 2026 the data and model never saw in training. The
 best model (**CatBoost**) achieves **2.83% MAPE**, versus the official TSO day-ahead
@@ -45,7 +45,7 @@ see [Key Decisions & Lessons](#9--key-decisions--lessons).
 
 ---
 
-## 3 · Architecture
+## Architecture
 
 ```
 ┌──────────────┐     ┌──────────────┐
@@ -91,7 +91,7 @@ see [Key Decisions & Lessons](#9--key-decisions--lessons).
 
 ---
 
-## 4 · Results
+## Results
 
 All models tested on the same 2026 hold-out (`2026-01-01` → `2026-06-15`).
 
@@ -117,7 +117,7 @@ All models tested on the same 2026 hold-out (`2026-01-01` → `2026-06-15`).
 
 ---
 
-## 5 · Tech Stack
+## Tech Stack
 
 | Tool | Purpose |
 |---|---|
@@ -136,7 +136,7 @@ All models tested on the same 2026 hold-out (`2026-01-01` → `2026-06-15`).
 
 ---
 
-## 6 · Setup & Installation
+## Setup & Installation
 
 ```bash
 # 1. Clone
@@ -159,7 +159,7 @@ pip install -r requirements.txt        # slim runtime (streamlit, pandas, numpy,
 
 ---
 
-## 7 · How to Run
+## How to Run
 
 ```bash
 # ── Full training pipeline (from project root) ───────────────────
@@ -185,7 +185,7 @@ mlflow ui            # then open http://localhost:5000
 
 ---
 
-## 8 · Feature Engineering
+## Feature Engineering
 
 All features are shifted by the 24-hour forecast horizon so the model only ever uses
 information available at forecast time. Calendar features are known in advance and are not shifted.
@@ -211,7 +211,7 @@ information available at forecast time. Calendar features are known in advance a
 
 ---
 
-## 9 · Key Decisions & Lessons
+## Key Decisions & Lessons
 
 - **Found and fixed data leakage in my own work.** A mid-project audit revealed that rolling and
   temperature features were computed over windows that included the predicted hour and silently leaking the target. Fixing it (shifting every such feature by the 24h horizon) raised CatBoost's honest MAPE from an inflated **2.24% to 2.83%**. The full before/after is in [`reports/leak_audit.md`](reports/leak_audit.md). **The honest number, with an audit trail, is worth more than the inflated one.**
@@ -227,7 +227,7 @@ information available at forecast time. Calendar features are known in advance a
 
 ---
 
-## 10 · Limitations & Future Work
+## Limitations & Future Work
 
 **Limitations**
 - **Weather is observed, not forecasted.** Temperature features use observed values shifted 24h as a stand-in for a real day-ahead weather forecast; true operational error would be marginally higher (though temperature has low feature importance here).
@@ -246,7 +246,7 @@ information available at forecast time. Calendar features are known in advance a
 
 ---
 
-## 11 · File Structure
+## File Structure
 
 ```
 german-electricity-demand-forecasting/
