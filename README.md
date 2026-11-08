@@ -291,12 +291,12 @@ This project's modelling choices follow recent peer-reviewed literature on gradi
 
 - Muqtadir, A., Li, B., Ying, Z., Songsong, C., & Kazmi, S. N. (2025). *"Nowcasting the next
   hour of residential load using boosting ensemble machines."* Scientific Reports, 15, 7157.
-  https://www.nature.com/articles/s41598-025-91767-6 — Integrates LightGBM, XGBoost, and CatBoost
+  https://www.nature.com/articles/s41598-025-91767-6 Integrates LightGBM, XGBoost, and CatBoost
   for short-term load forecasting, motivating this project's three-model boosting stack.
 
 - Song, K.-M., Kim, T.-G., Cho, S.-M., & Song, K.-B. (2025). *"XGBoost-Based Very Short-Term
   Load Forecasting Using Day-Ahead Load Forecasting Results."* Electronics, 14(18), 3747.
-  DOI: 10.3390/electronics14183747 — Incorporates the TSO day-ahead forecast as a model input,
+  DOI: 10.3390/electronics14183747 Incorporates the TSO day-ahead forecast as a model input,
   directly relevant to this project's TSO benchmark comparison.
 
 ---
@@ -312,4 +312,4 @@ under the licence terms and is provided here accordingly.
 
 ## 🔗 Author
 
-**Utkarsh Rai** — Data Scientist (Berlin) · [GitHub](https://github.com/UtkarshRai-ds)
+**Utkarsh Rai** — Data Scientist (Berlin) 
